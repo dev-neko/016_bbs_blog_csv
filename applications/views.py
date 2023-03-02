@@ -2,8 +2,6 @@ import io
 from pprint import pprint
 
 import openpyxl as openpyxl
-import xlrd
-import xlwings as xlwings
 from django.shortcuts import redirect
 from django.views.generic import FormView,ListView,UpdateView
 from .forms import FileUploadForm
@@ -91,8 +89,11 @@ class FileUploadView(FormView):
 	def get_context_data(self,**kwargs):
 		ctx=super().get_context_data(**kwargs)
 		company_model_obj=CompanyModel.objects.all()
-		ctx['company_list']=eval(company_model_obj[0].information)
-		ctx['title_list']=['企業名', 'HP', '業界', '住所', '従業員数', '設立年月', '上場区分', '総合評価', 'A.事業戦略', 'B.経営手腕', 'C.職場環境', 'D.仕事の意義', 'E.教育・成長', 'F.給与・処遇', 'G.生活しやすさ']
+		try:
+			ctx['company_list']=eval(company_model_obj[0].information)
+			ctx['title_list']=['企業名', 'HP', '業界', '住所', '従業員数', '設立年月', '上場区分', '総合評価', 'A.事業戦略', 'B.経営手腕', 'C.職場環境', 'D.仕事の意義', 'E.教育・成長', 'F.給与・処遇', 'G.生活しやすさ']
+		except:
+			pass
 		return ctx
 
 
