@@ -1,52 +1,44 @@
 {% extends "base/base.html" %}
 {% block content %}
 {% load static %}
-<html>
-	<body>
-
-	<!-- リンクカード -->
-	<div class="card mb-3">
-		<div class="row no-gutters bg-light position-relative">
-			<div class="col-md-6 mb-md-0 p-md-4">
-				<img class="card-img-top" src="{% static 'img/dl_csv_zip.png' %}" data-holder-rendered="true">
+<div class="row">
+	<div class="col-sm-6 offset-sm-3">
+		<form action="" method="post" enctype="multipart/form-data">
+			<h4>アップロードするファイルを選択</h4>
+			{% csrf_token %}
+			<div class="form-group">
+				{{ form.file }}
 			</div>
-			<div class="col-md-6 position-static p-4 pl-md-0">
-				<h5 class="mt-0">ブログ記事「【Django】複数の辞書型リストをcsvに変換し、zipで圧縮してダウンロードする方法」の動作確認ページです。</h5>
-				<p></p>
-				<a href="{% url 'app_urls:dl_csv_zip' %}" class="stretched-link">詳細を見る</a>
-			</div>
-		</div>
+			<button type="submit" class="btn btn-primary">実行</button>
+		</form>
 	</div>
+</div>
 
-	<!-- リンクカード -->
-	<div class="card mb-3">
-		<div class="row no-gutters bg-light position-relative">
-			<div class="col-md-6 mb-md-0 p-md-4">
-				<img class="card-img-top" src="{% static 'img/rec_ajax.png' %}" data-holder-rendered="true">
-			</div>
-			<div class="col-md-6 position-static p-4 pl-md-0">
-				<h5 class="mt-0">ブログ記事「【Django】Ajaxで再帰処理を行う方法」の動作確認ページです。</h5>
-				<p></p>
-				<a href="{% url 'app_urls:rec_ajax' %}" class="stretched-link">詳細を見る</a>
-			</div>
-		</div>
-	</div>
+{% for company_dict in company_list %}
 
-	<!-- リンクカード -->
-	<div class="card mb-3">
-		<div class="row no-gutters bg-light position-relative">
-			<div class="col-md-6 mb-md-0 p-md-4">
-				<img class="card-img-top" src="{% static 'img/help_modal.png' %}" data-holder-rendered="true">
-			</div>
-			<div class="col-md-6 position-static p-4 pl-md-0">
-				<h5 class="mt-0">ブログ記事「【Django】【Bootstrap4】部品化したモーダルをヘルプボタンで表示させる」の動作確認ページです。</h5>
-				<p></p>
-				<a href="{% url 'app_urls:help_modal' %}" class="stretched-link">詳細を見る</a>
-			</div>
-		</div>
-	</div>
+<p>
+
+{% for k,v in company_dict.items %}
+
+{% for title in title_list %}
+
+{% if title == k %}
+
+<div>
+	{{k}}:{{v}}
+</div>
+
+{% endif %}
+
+{% endfor %}
+
+{% endfor %}
+
+</p>
+
+{% endfor %}
 
 
-	</body>
-</html>
+
+
 {% endblock %}

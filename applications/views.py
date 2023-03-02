@@ -1,137 +1,98 @@
-import csv
-import math
-import time
-import urllib.parse
-import zipfile
+import io
+from pprint import pprint
+
+import openpyxl as openpyxl
+import xlrd
+import xlwings as xlwings
+from django.shortcuts import redirect
+from django.views.generic import FormView,ListView,UpdateView
+from .forms import FileUploadForm
+import pandas as pd
+from django.urls import reverse_lazy
+from django.http import HttpResponse
 from io import BytesIO
-from django.shortcuts import render
-from django.http import HttpResponseRedirect,HttpResponse,JsonResponse
+
+from .models import CompanyModel
 
 
-# リンクページの表示
-def index(request):
-	# ログインの確認
-	if request.user.is_authenticated:
-		return render(request,'applications/index.html')
-	else:
-		# ログインしていない場合はログインページへ移動
-		return HttpResponseRedirect('/accounts/login/')
+
+class FileUploadView(FormView):
+	template_name='applications/index.html'
+	form_class=FileUploadForm
+	success_url=reverse_lazy('index')
+	# context_object_name='ctx'
+	# model=CompanyModel
+
+	def form_valid(self,form):
+		# フォームから受け取ったデータをデータフレームへ変換
+		# ファイル形式に応じた読み込み
+		# file=io.TextIOWrapper(form.cleaned_data['file'],encoding='cp932')
+		# print(file.encoding)
+
+		# def get_context_data(self,**kwargs):
+		# 	ctx=super().get_context_data(**kwargs)
+		# 	# excel=self.request.FILES['file']
+		# 	return ctx,self.header_cells
+
+		# df=pd.read_excel(file,dtype=str,index_col=0)
+		# print(df)
+
+		# with open(file,encoding='cp932') as file:
+		# 	data = file.read()
+
+		# wb = xlrd.open_workbook(file, encoding_override='cp932')
+		# df = pd.read_excel(wb)
+		# print(df)
+
+		# wb=xlwings.Book(df)
+		# data_sheet=wb.sheets['Sheet1']
+		# test_data=data_sheet.range(1,11).expand('down').value
+		# print(test_data)
+
+		# if filetype == 'csv':
+		# 	df = pd.read_csv(file, dtype=str)
+		# elif filetype == 'xlsx':
+		# 	df = pd.read_excel(file, dtype=str, index_col=0)
+
+		excel=self.request.FILES['file']
+		# print(excel.read())
+
+		wb=openpyxl.load_workbook(excel)
+		ws=wb['Sheet1']
+		# print(ws.cell(4,11).value)
+
+		# １行目（列名のセル）
+		header_cells = ws[3]
+		# print(header_cells[10].value)
+
+		# ２行目以降（データ）
+		company_list = []
+		for row in ws.iter_rows(min_row=4):
+			row_dic = {}
+			# セルの値を「key-value」で登録
+			for k, v in zip(header_cells, row):
+				if k.value!=None:
+					row_dic[k.value] = v.value
+			company_list.append(row_dic)
+
+		# pprint(student_list)
+
+		# DBに保存
+		CompanyModel.objects.update_or_create(defaults={'information':company_list})
+
+		return redirect('app_urls:index')
 
 
-# csvをzipでダウンロードするページの表示
-def dl_csv_zip(request):
-	# ログインの確認
-	if request.user.is_authenticated:
-		return render(request,'applications/dl_csv_zip.html')
-	else:
-		# ログインしていない場合はログインページへ移動
-		return HttpResponseRedirect('/accounts/login/')
+	# def get_object(self,queryset=None):
+	# 	ctx['company_list']=CompanyModel.objects.all()
+	# 	print(ctx)
+	# 	return ctx
+
+	def get_context_data(self,**kwargs):
+		ctx=super().get_context_data(**kwargs)
+		company_model_obj=CompanyModel.objects.all()
+		ctx['company_list']=eval(company_model_obj[0].information)
+		ctx['title_list']=['企業名', 'HP', '業界', '住所', '従業員数', '設立年月', '上場区分', '総合評価', 'A.事業戦略', 'B.経営手腕', 'C.職場環境', 'D.仕事の意義', 'E.教育・成長', 'F.給与・処遇', 'G.生活しやすさ']
+		return ctx
 
 
-# 指定された辞書型リストをcsvに変換してzipでダウンロードする処理
-def dl_csv_zip_proc(request):
-
-	if request.method=='POST':
-		# postされたcheckboxの内容をリストに格納
-		checkbox_list=request.POST.getlist('checkbox')
-		# actionがsaveかつ、checkbox_listが空でない場合
-		# checkbox_listが空の場合に実行すると「zip」ファイルがダウンロードされてしまうのを防ぐ
-		if request.POST.get('action')=='save' and checkbox_list:
-
-			# 書き込むzipの準備
-			memory_file=BytesIO()
-			zip_file=zipfile.ZipFile(memory_file,'w')
-
-			for item in checkbox_list:
-				# csvの準備
-				csv_file=HttpResponse(content_type='text/csv')
-				# csvヘッダーの書き込み
-				writer=csv.DictWriter(csv_file,['ts','chat'])
-				writer.writeheader()
-				# csvへの書き込み
-				# postされたtextareaの内容は文字列のためevalで辞書型リストに変換
-				writer.writerows(eval(request.POST.get(item)))
-				# zipに圧縮
-				zip_file.writestr(f'{item}.csv',csv_file.getvalue())
-				csv_file.close()
-
-			# zipの内容をreponseに設定
-			#ここでcloseしないとエラーが発生して解凍できない
-			zip_file.close()
-			response=HttpResponse(memory_file.getvalue(), content_type='application/zip')
-			# checkbox_listを「,」で区切ってURLエンコード
-			quoted_filename = urllib.parse.quote(",".join(checkbox_list))
-			# quoted_filenameをファイル名にする
-			# filename*にURLエンコードしたファイル名をセットすることで日本語のファイル名にも対応可能
-			response['Content-Disposition']=f'attachment; filename="{quoted_filename}.zip"; filename*=UTF-8"{quoted_filename}.zip"'
-
-			# responseを返す
-			return response
-
-		# checkbox_listが空の場合は何もしないのでstatus=204を返す
-		else:
-			return HttpResponse(status=204)
-
-
-# rec_ajaxページの表示
-def rec_ajax(request):
-	# ログインの確認
-	if request.user.is_authenticated:
-		return render(request,'applications/rec_ajax.html')
-	else:
-		# ログインしていない場合はログインページへ移動
-		return HttpResponseRedirect('/accounts/login/')
-
-
-# rec_ajaxの処理
-def rec_ajax_proc(request):
-
-	if request.method=='POST':
-		# 進捗を計算するためにint型に変換
-		select_num=int(request.POST.get('select_num'))
-
-		# 1回目はnext_numがないため、tryで処理を分ける
-		try:
-			# postデータから取得し、進捗を計算するためにint型に変換
-			current_num=int(request.POST.get('next_num'))
-		except:
-			# postデータからは取得できないため初期値を定義する
-			current_num=1
-
-		print(f'select_num：{select_num}')
-		print(f'current_num：{current_num}')
-
-		# 進捗(%)を計算
-		# select_numから割合を算出してmath.floorで小数点以下切り捨て
-		progress=math.floor(current_num/select_num*100)
-		print(f'進捗：{progress}%')
-
-		# ajaxに返すjsonレスポンス
-		json_resp={'select_num':select_num, # formで選択した数値
-		           'current_num':current_num, # 現在値
-		           'next_num':current_num+1, # 次の数値
-		           'progress':progress, # 進捗(%)
-		           }
-
-		# formで選択した数値と現在値を比較して、json_resp辞書にkey→'state'、value→状態を追加
-		if select_num==current_num:
-			json_resp['state']='終了'
-		else:
-			json_resp['state']='実行中'
-
-		print(f'json_resp：{json_resp}')
-
-		# 処理はほぼ一瞬で終了してしまうためスリープ
-		time.sleep(1)
-
-	return JsonResponse(json_resp)
-
-
-# help_modalページの表示
-def help_modal(request):
-	# ログインの確認
-	if request.user.is_authenticated:
-		return render(request,'applications/help_modal.html')
-	else:
-		# ログインしていない場合はログインページへ移動
-		return HttpResponseRedirect('/accounts/login/')

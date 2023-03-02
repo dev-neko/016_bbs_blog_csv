@@ -5,8 +5,8 @@ from django.core.management.utils import get_random_secret_key
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-DEBUG=False
-# DEBUG=True
+# DEBUG=False
+DEBUG=True
 
 ALLOWED_HOSTS=['*']
 
@@ -114,11 +114,15 @@ STATICFILES_DIRS = (
 )
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+# 追加 mediaを扱うための設定
+MEDIA_URL='/media/'
+MEDIA_ROOT=os.path.join(BASE_DIR,'media')
+
 # local_settingsの有無で設定を変更する
-try:
-	from .local_settings import *
-except ImportError:
-	pass
+# try:
+# 	from .local_settings import *
+# except ImportError:
+# 	pass
 
 # Authentication
 LOGIN_URL = '/login/'
