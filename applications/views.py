@@ -95,5 +95,3 @@ class FileUploadView(FormView):
 		except:
 			pass
 		return ctx
-
-

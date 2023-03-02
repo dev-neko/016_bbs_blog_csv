@@ -8,6 +8,7 @@ venv
 staticfiles
 db.sqlite3
 local_settings.py
+migrations
 
 .replit
 poetry.lock
