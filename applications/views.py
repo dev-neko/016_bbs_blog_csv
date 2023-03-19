@@ -14,6 +14,7 @@ from .models import CompanyModel
 
 
 
+# ExcelファイルをアップロードしてWebページに表示する
 class FileUploadView(FormView):
 	template_name='applications/index.html'
 	form_class=FileUploadForm
