@@ -10,7 +10,7 @@ DEBUG=True
 
 ALLOWED_HOSTS=['*']
 
-replit_appname='exeltowebpage'
+replit_appname='015exceltowebpage'
 replit_username='devnekoreplit'
 CSRF_TRUSTED_ORIGINS=CORS_ORIGIN_WHITELIST=['https://'+replit_appname+'.'+replit_username+'.repl.co']
 

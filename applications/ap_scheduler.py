@@ -4,7 +4,9 @@ from apscheduler.schedulers.background import BackgroundScheduler
 
 
 def periodic_execution():
-	response=requests.get('https://exeltowebpage.devnekoreplit.repl.co/')
+	response=requests.get(
+		'https://015exceltowebpage.devnekoreplit.repl.co/'
+	)
 	print(response.status_code)
 
 # スケジュールの設定
