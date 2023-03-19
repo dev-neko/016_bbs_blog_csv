@@ -29,6 +29,7 @@ INSTALLED_APPS = [
 	'django.contrib.contenttypes',
 	'django.contrib.sessions',
 	'django.contrib.messages',
+	'livereload', # django-livereload-server
 	'django.contrib.staticfiles',
 	'applications.apps.ApplicationsConfig',
 ]
@@ -42,6 +43,7 @@ MIDDLEWARE = [
 	'django.contrib.messages.middleware.MessageMiddleware',
 	'django.middleware.clickjacking.XFrameOptionsMiddleware',
 	'whitenoise.middleware.WhiteNoiseMiddleware',
+	'livereload.middleware.LiveReloadScript', # django-livereload-server
 ]
 
 ROOT_URLCONF = 'config.urls'

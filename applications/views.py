@@ -3,9 +3,9 @@ from pprint import pprint
 
 import openpyxl as openpyxl
 from django.shortcuts import redirect
-from django.views.generic import FormView,ListView,UpdateView
+from django.views.generic import FormView,ListView,UpdateView,TemplateView
 from .forms import FileUploadForm
-import pandas as pd
+# import pandas as pd
 from django.urls import reverse_lazy
 from django.http import HttpResponse
 from io import BytesIO
@@ -95,3 +95,8 @@ class FileUploadView(FormView):
 		except:
 			pass
 		return ctx
+
+
+
+class Sample01(TemplateView):
+	template_name='applications/falcon-v3.16.0/public/sample01.html'
