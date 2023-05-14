@@ -1,7 +1,7 @@
 __pycache__
 .idea
 *.py[co]$
-bk
+#bk
 memo
 
 venv
