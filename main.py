@@ -3,7 +3,7 @@ import subprocess
 
 
 # requirements.txtから一括インストール
-cmd="pip install -r requirements.txt"
+cmd="pip install -r requirements/production.txt"
 subprocess.run(cmd.split(' '))
 
 cmd="python manage.py collectstatic --noinput"

@@ -1,0 +1,156 @@
+{% extends 'base/base.html' %}
+{% block content %}
+{% load static %}
+
+<!-- ===============================================-->
+<!--    Main Content-->
+<!-- ===============================================-->
+<div class="content">
+
+	{# form str #}
+	<div class="row g-3 mb-3" id="axios_form">
+		<div class="col-lg-12">
+			<div class="card h-100">
+
+				<div class="card-header d-flex flex-between-center bg-light py-2">
+					<h6 class="mb-0">Shared Files</h6><a class="py-1 fs--1 font-sans-serif" href="#!">View All</a>
+				</div>
+
+				<div class="card-body">
+					<div class="w-100">
+						<form 
+						method="POST" 
+						>
+							{% csrf_token %}
+
+							<div class="mb-3">
+								<label class="form-label" for="textarea_siteurl">サイトURL</label>
+								<textarea
+									class="form-control"
+									id="textarea_siteurl"
+									rows="3"
+									name="textarea_siteurl" 
+									placeholder="サイトURLを改行区切りで入力してください" 
+									>
+https://nova.5ch.net/test/read.cgi/livegalileo/1684319120/
+https://bbs.animanch.com/board/1908222/
+https://hayabusa.open2ch.net/test/read.cgi/livejupiter/1684224962/
+https://aaa</textarea>
+							</div>
+
+							<div class="mb-3">
+								<label class="form-label" for="textarea_excludeword">除外ワード</label>
+								<textarea
+									class="form-control"
+									id="textarea_excludeword"
+									rows="3"
+									name="textarea_excludeword" 
+									placeholder="除外ワードをスペース区切りで入力してください"
+									>自己主張 嘘 変わってない</textarea>
+							</div>
+
+							<button class="btn btn-primary" type="submit">実行</button>
+							<button class="btn btn-primary" type="button" disabled="">
+								<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+								Loading...
+							</button>
+							<button class="btn btn-danger" type="button" onclick="window.location.reload();">中止</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	{# form end #}
+
+	{# csvダウンロード str #}
+	<div class="row g-3 mb-3">
+		<div class="col-lg-6">
+			<div class="card h-100">
+
+				<div class="card-header d-flex flex-between-center bg-light py-2">
+					<h6 class="mb-0">CSV Files</h6>
+					<a class="py-1 fs--1 font-sans-serif" href="#!">View All</a>
+				</div>
+
+				<div class="card-body pb-0">
+					<div class="w-100">
+
+						<div class="d-flex mb-3 hover-actions-trigger align-items-center">
+							<div class="file-thumbnail">
+								<img class="img-fluid" src="{% static 'falcon/assets/img/icons/docs.png' %}" alt="">
+							</div>
+							<div class="ms-3 flex-shrink-1 flex-grow-1">
+								<h6 class="mb-1 text-900 fw-semi-bold">functions.csv</h6>
+								<div class="hover-actions end-0 top-50 translate-middle-y">
+									<a class="btn btn-light border-300 btn-sm me-1 text-600" 
+									data-bs-toggle="tooltip"
+									data-bs-placement="top" 
+									href="{% static 'falcon/assets/img/icons/cloud-download.svg' %}" 
+									download="download" 
+									aria-label="Download" 
+									data-bs-original-title="Download">
+										<img src="{% static 'falcon/assets/img/icons/cloud-download.svg' %}" alt="" width="15">
+									</a>
+									<button class="btn btn-light border-300 btn-sm me-1 text-600 shadow-none" 
+									type="button" 
+									data-bs-toggle="tooltip" 
+									data-bs-placement="top" 
+									aria-label="Edit"
+									data-bs-original-title="Edit">
+										<img src="{% static 'falcon/assets/img/icons/edit-alt.svg' %}" alt="" width="15">
+									</button>
+								</div>
+							</div>
+						</div>
+
+						<hr class="text-200">
+
+						<div class="d-flex mb-3 hover-actions-trigger align-items-center">
+							<div class="file-thumbnail">
+								<img class="img-fluid" src="{% static 'falcon/assets/img/icons/zip.png' %}" alt="">
+							</div>
+							<div class="ms-3 flex-shrink-1 flex-grow-1">
+								<h6 class="mb-1 text-900 fw-semi-bold">Falcon v1.8.2.zip</h6>
+								<div class="hover-actions end-0 top-50 translate-middle-y">
+									<a class="btn btn-light border-300 btn-sm me-1 text-600" 
+									data-bs-toggle="tooltip"
+									data-bs-placement="top" 
+									href="{% static 'falcon/assets/img/icons/cloud-download.svg' %}" 
+									download="download" 
+									aria-label="Download" 
+									data-bs-original-title="Download">
+										<img src="{% static 'falcon/assets/img/icons/cloud-download.svg' %}" alt="" width="15">
+									</a>
+									<button class="btn btn-light border-300 btn-sm me-1 text-600 shadow-none" 
+									type="button" 
+									data-bs-toggle="tooltip" 
+									data-bs-placement="top" 
+									aria-label="Edit"
+									data-bs-original-title="Edit">
+										<img src="{% static 'falcon/assets/img/icons/edit-alt.svg' %}" alt="" width="15">
+									</button>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	{# csvダウンロード end #}
+
+
+</div>
+<!-- ===============================================-->
+<!--    End of Main Content-->
+<!-- ===============================================-->
+
+{% endblock %}
+
+{% comment %}
+
+						@submit.prevent="addItem($event,'{% url 'app_urls:axios_form' %}')" 
+
+{% endcomment %}

@@ -1,29 +1,42 @@
 {% load static %}
-<html lang="ja">
+
+{% comment %}
+「予期しないトークン」エラーが表示されるけど消すとナビバーの検索欄とかがずれるのでこのままにしておく
+{% endcomment %}
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en-US" dir="ltr">
+
 	<head>
 		<!-- head ここから -->
 		{% include 'base/head.html' %}
 		<!-- head ここまで -->
 	</head>
+
 	<body>
-		<!-- navbar ここから -->
-		{% include "base/navbar.html" %}
-		<!-- navbar ここまで -->
+		<main class="main" id="top">
+			<div class="container-fluid" data-layout="container">
 
-		<!-- content ここから -->
-		<!-- ナビバー以外に余白を入れるために指定 -->
-		<div class="between-content">
-			{% block content %}
-			{% endblock %}
+				<!-- navbar ここから -->
+				{% include "base/navbar.html" %}
+				<!-- navbar ここまで -->
+
+				<!-- content ここから -->
+				{% block content %}
+				{% endblock %}
+				<!-- content ここまで -->
+
+				{% comment %}
+				<!-- Footer ここから -->
+				{% include "base/footer.html" %}
+				<!-- Footer ここまで -->
+				{% endcomment %}
 		</div>
-		<!-- content ここまで -->
+	</main>
 
-		<!-- 外部jsファイル ここから -->
-		{% include "base/js.html" %}
-		<!-- 外部jsファイル ここまで -->
+	<!-- 外部jsファイル ここから -->
+	{% include "base/js.html" %}
+	<!-- 外部jsファイル ここまで -->
+		
+</body>
 
-		<!-- Footer ここから -->
-		{% include "base/footer.html" %}
-		<!-- Footer ここまで -->
-	</body>
 </html>

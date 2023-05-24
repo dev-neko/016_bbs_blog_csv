@@ -1,0 +1,231 @@
+/* -------------------------------------------------------------------------- */
+/*                                Falcon Button                               */
+/* -------------------------------------------------------------------------- */
+/* prettier-ignore */
+/*# sourceMappingURL=user.css.map */
+
+:root,
+[data-bs-theme=light] {
+	--falcon-navbar-light-brand-color: #000000;
+}
+
+.navbar {
+	--falcon-navbar-brand-font-size: 1.2rem;
+}
+
+.navbar-brand {
+	font-weight: 600;
+}
+
+/* パンくずリストの区切り文字を変更 */
+.breadcrumb-item + .breadcrumb-item::before {
+	content: var(--falcon-breadcrumb-divider, ">");
+}
+
+/* プログレスバーの縦線 */
+.progress_bar_vertical_line {
+	width: 3px;
+	background: #fff;
+}
+
+/* テーブルをborderlessにしても線が追加されるので追加 */
+.table-borderless {
+	border-width: 0;
+}
+
+
+/* テーブルの要素をborderで囲んだときに隙間を作る */
+.sample_separate {
+  border-collapse: separate;
+  border-spacing: 10px;
+}
+
+/*
+.sample-separate td,th {
+  border: 1px solid gray;
+  background-color: #cc9999;
+  width: 100px;
+}
+*/
+
+/* falconのhrは青いので黒に変更 */
+.custom_hr {
+  margin: 0.5rem 0;
+  color: var(--falcon-black);
+  border: 0;
+  border-top: var(--falcon-border-width) solid;
+  opacity: 1;
+}
+
+.table tfoot > tr > th:first-child,
+.table thead > tr > th:first-child,
+.table tr th:first-child,
+.table tr td:first-child {
+  padding-left: 0.75rem;
+}
+.table tfoot > tr > th:last-child,
+.table thead > tr > th:last-child,
+.table tr th:last-child,
+.table tr td:last-child {
+  padding-right: 0.75rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* BK */
+/* https://junpei-sugiyama.com/background-vertical-line/
+.container {
+	position: relative;
+}
+.grid {
+	display: flex;
+	height: 100%;
+	position: absolute;
+	width: 100%;
+}
+.grid span {
+	border-right: 2px solid #333;
+	height: 100%;
+	width: 10%;
+}
+*/
+/* 数値が微妙にずれていたので手直しした */
+/*
+.pg10{
+	left:13%;
+}
+.pg20{
+	left:22%;
+}
+.pg30{
+	left:31%;
+}
+.pg40{
+	left:40.5%;
+}
+.pg50{
+	left:50%;
+}
+.pg60{
+	left:58.5%;
+}
+.pg70{
+	left:68%;
+}
+.pg80{
+	left:77%;
+}
+.pg90{
+	left:86%;
+}
+
+プログレスバーの縦線
+.pg10,.pg20,.pg30,.pg40,.pg50,.pg60,.pg70,.pg80,.pg90{
+	position:absolute;
+	//margin-top:-10px;
+	//z-index:1;
+	height:30px;
+	width:3px;
+	//left:0.5px;
+	//border-radius:25px;
+	background-color:#FFFFFF;
+}
+.pg10{
+	left:13%;
+}
+.pg20{
+	left:22%;
+}
+.pg30{
+	left:31%;
+}
+.pg40{
+	left:40.5%;
+}
+.pg50{
+	left:50%;
+}
+.pg60{
+	left:58.5%;
+}
+.pg70{
+	left:68%;
+}
+.pg80{
+	left:78%;
+}
+.pg90{
+	left:86%;
+}
+progressに対して%指定するとずれなかった
+.progress.pg10{
+	left:10%;
+}
+.progress.pg20{
+	left:20%;
+}
+.progress.pg30{
+	left:30%;
+}
+.progress.pg40{
+	left:40%;
+}
+.progress.pg50{
+	left:50%;
+}
+.progress.pg60{
+	left:60%;
+}
+.progress.pg70{
+	left:70%;
+}
+.progress.pg80{
+	left:80%;
+}
+.progress.pg90{
+	left:90%;
+}
+
+*/
+
+/*
+
+table.dataTable.table-sm > thead > tr > th :not(.sorting_disabled) {
+  padding-right: 0.25rem;
+}
+.table > :not(caption) > * > * {
+  padding: 0.75rem;
+  background-color: var(--falcon-table-bg);
+  border-bottom-width: var(--falcon-border-width);
+  -webkit-box-shadow: inset 0 0 0 9999px var(--falcon-table-accent-bg);
+  box-shadow: inset 0 0 0 9999px var(--falcon-table-accent-bg);
+}
+.table-sm > :not(caption) > * > * {
+  padding: 0.25rem;
+  padding-left: 0.25rem;
+}
+*/

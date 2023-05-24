@@ -6,9 +6,9 @@ from . import settings  # mediaを使うために追加
 urlpatterns = [
 	# トップページへのURLルーティングをapplicationsフォルダ内のurls.pyへ回す
 	path('',include('applications.urls')),
-	# adminページの表示
+	# adminページ
 	path('admin/', admin.site.urls,name='admin'),
-	# ログイン関連ページの表示
+	# ログイン関連ページ
 	path('accounts/',include('django.contrib.auth.urls')),
 ]
 

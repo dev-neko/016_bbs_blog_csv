@@ -1,0 +1,38 @@
+{% load static %}
+
+{% comment %}
+「予期しないトークン」エラーが表示されるけど消すとナビバーの検索欄とかがずれるのでこのままにしておく
+{% endcomment %}
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en-US" dir="ltr">
+
+	<head>
+		<!-- head ここから -->
+		{% include 'base/head.html' %}
+		<!-- head ここまで -->
+	</head>
+
+	<body>
+		{% comment %}
+		{% endcomment %}
+		<!-- navbar ここから -->
+		{% include "base/navbar.html" %}
+		<!-- navbar ここまで -->
+
+		<!-- content ここから -->
+		{% block content %}
+		{% endblock %}
+		<!-- content ここまで -->
+
+		<!-- 外部jsファイル ここから -->
+		{% include "base/js.html" %}
+		<!-- 外部jsファイル ここまで -->
+
+		{% comment %}
+		<!-- Footer ここから -->
+		{% include "base/footer.html" %}
+		<!-- Footer ここまで -->
+		{% endcomment %}
+	</body>
+
+</html>
