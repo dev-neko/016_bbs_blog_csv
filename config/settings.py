@@ -10,8 +10,8 @@ DEBUG=True
 
 ALLOWED_HOSTS=['*']
 
-replit_appname='015exceltowebpage'
-replit_username='devnekoreplit'
+replit_appname='016bbsblogcsv'
+replit_username='mckqtpvx'
 CSRF_TRUSTED_ORIGINS=CORS_ORIGIN_WHITELIST=['https://'+replit_appname+'.'+replit_username+'.repl.co']
 
 # シークレットキーを都度作成する

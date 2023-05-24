@@ -18,7 +18,7 @@ from django.views.generic import (
 	TemplateView,
 	CreateView,
 )
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
 # models
 from .models import CompanyModel
 # forms
@@ -122,7 +122,7 @@ class v1(LoginRequiredMixin,TemplateView):
 	# template_name='applications/Falcon_nav_test.html'
 
 class SearchFormView(
-	LoginRequiredMixin,
+	# LoginRequiredMixin,
 	# FormView,
 	TemplateView,):
 	template_name='applications/index_v1.html'
@@ -170,8 +170,44 @@ class SearchFormView(
 
 def axios_form(request):
 	if request.method=='POST':
-		# formで入力されてsubmitする以外の方法でデータを送信した場合はrequest.bodyに格納されるのでこの方法が必要
 		req_data=json.loads(request.body)
-		print(req_data)
+		# print(req_data)
+		req_textarea_siteurl=req_data.get('textarea_siteurl').split('\n')
+		req_textarea_excludeword=req_data.get('textarea_excludeword').split(' ')
+		# print(req_textarea_siteurl)
+		# print(req_textarea_excludeword)
 
-	return None
+		stc=ScrapeToCsv(req_textarea_excludeword,req_textarea_siteurl)
+		csv_res_list_list=stc.main()
+		pprint(csv_res_list_list,sort_dicts=False)
+
+		memory_file=BytesIO()
+		zip_file=zipfile.ZipFile(memory_file,'w')
+
+		for count,csv_res_list in enumerate(csv_res_list_list):
+			# csv作成、zipにまとめる
+			csv_file=HttpResponse(content_type='text/csv')
+			writer=csv.writer(csv_file)
+			# NumPyで1列多行の2次元リストに変換しないと縦に書き込めない
+			np_csv_res_list=np.array(csv_res_list).reshape(-1,1).tolist()
+			writer.writerows(np_csv_res_list)
+			# print(csv_file.getvalue())
+			# zipにまとめる
+			zip_file.writestr(f'{count}.csv',csv_file.getvalue())
+			csv_file.close()
+
+		# zipファイルの内容をreponseに設定
+		zip_file.close()  #ここでcloseしないとエラー発生して解凍できない
+		response=HttpResponse(memory_file.getvalue(),content_type='application/zip')
+		# videoidを,で区切ってファイル名にする
+		# response['Content-Disposition']=f'attachment; filename="{",".join(request.POST.getlist("videoids"))}.zip"'
+		response['Content-Disposition']=f'attachment; filename="test.zip"'
+
+		return response
+		# return redirect('app_urls:v1')
+
+	# ajaxに返すjsonレスポンス
+	# json_resp={'req_data':req_data,
+	# 					 }
+	#
+	# return JsonResponse(json_resp)

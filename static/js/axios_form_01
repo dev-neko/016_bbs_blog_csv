@@ -3,11 +3,8 @@ new Vue({
 	delimiters: ['[[', ']]'],
 	// components: {},
   data: {
-    users: [],
-    name: '',
-		formdata:{
-			name:'',
-		},
+    textarea_siteurl: 'https://nova.5ch.net/test/read.cgi/livegalileo/1684319120/\nhttps://bbs.animanch.com/board/1908222/',
+		textarea_excludeword: '自己主張 嘘 変わってない',
   },
 	methods: {
 		// 順番のaxios
@@ -45,19 +42,22 @@ new Vue({
 			});
 		},
 		// kk
-		addItem:(event,url)=>{
-			// data = {'flag':event};
-			// let formdata=new FormData(document.getElementById('textarea_siteurl'))
-			data = {'flag':this.formdata};
-			console.log(this.formdata);
+		// アロー関数だとtextareaのタグまで入っていたけど、アロー関数をやめるとtextareaの内容だけ取得できた
+		addItem(event,post_url){
+			post_data={
+				'textarea_siteurl':this.textarea_siteurl,
+				'textarea_excludeword':this.textarea_excludeword,
+			};
+			// console.log(this.textarea_siteurl);
 
 			axios.defaults.xsrfCookieName = 'csrftoken'
 			axios.defaults.xsrfHeaderName = "X-CSRFTOKEN"
 			axios.post(
-				url,data,
+				post_url,post_data,
 			)
 			.then((response)=>{
-				console.log(response.data.item);
+				console.log(response.data);
+				saveAs(response.data);
 			})
 			.catch((error)=>{
 				console.log(error);
